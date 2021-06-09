@@ -2,8 +2,7 @@ import get from 'lodash/get'
 
 export default function normalizeCategory(rawData) {
     
-    const category = get(rawData, 'data.category', {});
-    const { categoryId } = category
+    const categoryId = get(rawData, 'data.category.categoryId', 0);
     const categoryName = get(rawData, 'data.category.content.name', "")
     const pageTitle = get(rawData, 'data.category.content.pageTitle', categoryName)
 

@@ -29,7 +29,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "graphql-tag": "^2.12.4",
     "isomorphic-unfetch": "^3.1.0",
+    "kibo.apollo.typescript.client": "file:../Kibo.Apollo.Clients/Typescript",
     "lodash.get": "^4.4.2",
     "react-storefront": "^8.18.2",
     "react-storefront-connector": "^1.0.0"

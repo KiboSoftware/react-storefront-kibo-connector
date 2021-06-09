@@ -1,5 +1,5 @@
 import SearchSuggestions from 'react-storefront-connector/SearchSuggestions'
-import fetchWithGraphQl from '../../util/fetchWithGraphQL.js'
+import fetchWithGraphQl from '../../util/fetchWithGraphQL'
 import normalizeSuggestionGroups from './normalizer'
 import query from './query'
 

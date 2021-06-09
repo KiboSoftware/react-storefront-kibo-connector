@@ -1,9 +1,9 @@
 import fulfillAPIRequest from 'react-storefront/props/fulfillAPIRequest'
-import createAppData from './utils/createAppData'
+import getAppData from './app/getAppData';
 
 export default async function account(req, res) {
   return await fulfillAPIRequest(req, {
-    appData: createAppData,
+    appData: getAppData,
     pageData: () =>
       Promise.resolve({
         title: 'My Account',

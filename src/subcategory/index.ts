@@ -7,7 +7,7 @@ import query from './query'
 import normalizeSubcategory from './normalizer'
 import getCategory from './id'
 
-import fetchWithGraphQl from '../util/fetchWithGraphQL.js'
+import fetchWithGraphQl from '../util/fetchWithGraphQL'
 import getAppData from '../app/getAppData.js';
 import { createCategoryBreadcrumbs } from '../util/createBreadcrumbs'
 

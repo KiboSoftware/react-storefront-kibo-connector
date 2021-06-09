@@ -1,5 +1,39 @@
 import fetch from 'isomorphic-unfetch';
-import { GRAPHQL_HOST } from '../config.js';
+import config, { GRAPHQL_HOST } from '../config.js';
+import { CreateApolloClient } from 'kibo.apollo.typescript.client'
+// import { CreateApolloClient } from '../../../Kibo.Apollo.Clients/TypeScript'
+
+
+async function fetchWithApollo({ query }, authorization = undefined) {
+  
+  const clientAuthHooks = {
+    onTicketChange: (authTicket: any) => {
+      if (!authorization || authorization.accessToken !== authTicket.accessToken) {
+        authorization = authTicket;
+        // console.log(authorization)
+      }
+    },
+    onTicketRead: () => {
+      return authorization as any;
+    },
+    onTicketRemove: () => {
+      authorization = undefined;
+    }
+  }
+  console.log('create app client')
+  const apolloClient = CreateApolloClient({
+      api: config,
+      clientAuthHooks
+  });
+  let rawResponse:any = {};
+  try {
+    rawResponse = await apolloClient.query({ query })
+  } catch (error) {
+    console.warn('caughttt', error)
+  }
+  rawResponse['authorization'] = authorization
+  return rawResponse
+}
 
 async function fetchWithGraphql(query) {
     const resp = await fetch(GRAPHQL_HOST, {
@@ -17,4 +51,40 @@ async function fetchWithGraphql(query) {
       return resp.json();
 }
 
+async function mutateWithApollo(operation, authorization = undefined) {
+  
+  const clientAuthHooks = {
+    onTicketChange: (authTicket: any) => {
+      if (!authorization || authorization.accessToken !== authTicket.accessToken) {
+        authorization = authTicket;
+        // console.log(authorization)
+      }
+    },
+    onTicketRead: () => {
+      return authorization as any;
+    },
+    onTicketRemove: () => {
+      authorization = undefined;
+    }
+  }
+  console.log('create app client')
+  const apolloClient = CreateApolloClient({
+      api: config,
+      clientAuthHooks
+  });
+  let rawResponse:any = {};
+  try {
+    rawResponse = await apolloClient.mutate(operation)
+  } catch (error) {
+    console.warn('ERRRRR\n\n\n', error)
+  }
+  rawResponse['authorization'] = authorization
+  return rawResponse
+}
+
 export default fetchWithGraphql
+
+export {
+  fetchWithApollo,
+  mutateWithApollo
+}
