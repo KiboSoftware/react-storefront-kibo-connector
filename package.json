@@ -2,7 +2,7 @@
   "name": "react-storefront-kibo-connector",
   "version": "1.0.0",
   "description": "React Storefront Kibo connector",
-  "module": "./src/index.js",
+  "module": "./index.js",
   "watch": {
     "push-build": {
       "patterns": [
@@ -16,12 +16,12 @@
     "release": "npm run build && cd dist && npm publish && cd ..",
     "watch": "npm-watch push-build",
     "ts:watch": "tsc --watch",
-    "ts-c": "tsc",
+    "ts:check": "tsc",
     "push-build": "npm run build && cd dist && yalc push && cd ..",
-    "clean": "mkdir -p dist; cd dist; ls | grep -v 'node_modules\\|package-lock.json' | xargs rm -rf; cd ../;",
-    "build": "npm run ts:check && npm run build:prep && NODE_ENV=production npm run build:sources",
-    "build:prep": "npm run clean && cp package.json README.md dist",
-    "build:sources": "babel ./src --source-maps --out-dir dist --extensions \".js,.ts\"",
+    "clean": "shx rm -rf dist && shx mkdir -p dist",
+    "build": "npm run build:prep && npm run ts:check && NODE_ENV=production npm run build:sources",
+    "build:prep": "npm run clean && shx cp package.json dist",
+    "build:sources": "babel ./src --source-maps --out-dir dist --extensions \".js\"",
     "lint": "npm run lint:check",
     "lint:check": "npx eslint src --ext .ts,.js",
     "lint:fix": "npx eslint src --ext .ts,.js --fix"
@@ -29,9 +29,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@kibocommerce/graphql-client": "^1.0.1-beta1.4",
     "graphql-tag": "^2.12.4",
     "isomorphic-unfetch": "^3.1.0",
-    "kibo.apollo.typescript.client": "file:../Kibo.Apollo.Clients/Typescript",
     "lodash.get": "^4.4.2",
     "react-storefront": "^8.18.2",
     "react-storefront-connector": "^1.0.0"
@@ -55,6 +55,7 @@
     "eslint-plugin-import": "^2.22.0",
     "husky": "^4.3.0",
     "npm-watch": "^0.6.0",
+    "shx": "^0.3.3",
     "typescript": "^3.9.9",
     "yalc": "*"
   }

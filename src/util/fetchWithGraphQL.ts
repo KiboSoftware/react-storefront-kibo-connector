@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import config, { GRAPHQL_HOST } from '../config.js';
-import { CreateApolloClient } from 'kibo.apollo.typescript.client'
-// import { CreateApolloClient } from '../../../Kibo.Apollo.Clients/TypeScript'
+import { CreateApolloClient } from '@kibocommerce/graphql-client'
 
 
 async function fetchWithApollo({ query }, authorization = undefined) {

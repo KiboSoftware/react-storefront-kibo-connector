@@ -1,5 +1,5 @@
 import config, { GRAPHQL_HOST } from '../config.js';
-import { CreateApolloClient } from 'kibo.apollo.typescript.client'
+import { CreateApolloClient } from '@kibocommerce/graphql-client'
 import getAuthTicketFromRequest from '../helpers/sessionTokenHelpers'
 
 function getClient(req) {
