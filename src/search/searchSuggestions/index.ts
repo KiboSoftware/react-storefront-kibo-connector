@@ -1,5 +1,5 @@
 import SearchSuggestions from 'react-storefront-connector/SearchSuggestions'
-import fetchWithGraphQl from '../../util/fetchWithGraphQL'
+import getClient from '../../util/client'
 import normalizeSuggestionGroups from './normalizer'
 import query from './query'
 
@@ -10,13 +10,16 @@ import query from './query'
  * @return {Promise<SearchSuggestions>} An object whose shape matches SearchSuggestion
  */
 
-export default async function searchSuggestions(q, req, res): Promise<SearchSuggestions> {
+export default async function searchSuggestions(
+  q,
+  req,
+  res,
+): Promise<SearchSuggestions> {
+  // const rawData = await fetchWithGraphQl({ query: query(q) })
+  const rawData = await getClient({ query: query(q) })
 
-    const rawData = await fetchWithGraphQl({ query: query(q) })
-    
-    return {
-        text: q,
-        groups: normalizeSuggestionGroups(rawData)
-    }
-
+  return {
+    text: q,
+    groups: normalizeSuggestionGroups(rawData),
+  }
 }
