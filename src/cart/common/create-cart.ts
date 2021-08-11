@@ -11,9 +11,9 @@ const mutation = gql`
   }
 `
 
-export default async function createCartForUserId(authTicket, userId) {
-  // const cartId = await mutateWithApollo({mutation, variables: { id: userId }}, authTicket)
-  const cartId = await getClient({ mutation, variables: { id: userId } })
+export default async function createCartForUserId(authTicket, userId, req) {
+  const client = getClient(req)
+  const cartId = await client.mutate({ mutation, variables: { id: userId } })
 
   let test = get(cartId, 'data.cart.id')
   console.log('test\n\n========', test)

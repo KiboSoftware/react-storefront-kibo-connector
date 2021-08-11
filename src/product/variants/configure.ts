@@ -19,13 +19,10 @@ function getConfigureVariables(productCode, options={}, quantity=1) {
     }
 }
 
-async function fetchVariant(productCode, options) {
-    // const rawData = await fetchWithGraphQl({
-    //     query: mutation, 
-    //     variables: getConfigureVariables(productCode, options)
-    // })
-    const rawData = await getClient({
-        query: mutation, 
+async function fetchVariant(productCode, options, req) {
+    const client = getClient(req)
+    const rawData = await client.mutate({
+        mutation: mutation, 
         variables: getConfigureVariables(productCode, options)
     })
     return rawData

@@ -1,8 +1,7 @@
-// import get from 'lodash/get'
 import Session from 'react-storefront-connector/Session'
 import getClient from '../util/client'
 
-export default async function signIn(
+export default async function (
   username: string,
   password: string,
   req: Request,
@@ -10,13 +9,23 @@ export default async function signIn(
 ): Promise<Session> {
   const client = await getClient(req)
   try {
-    const loginResponse = client.loginCustomerAndSetAuthTicket({
+    const loginResponse: any = await client.loginCustomerAndSetAuthTicket({
       username,
       password,
     })
-    return {
-      cart: undefined,
-      signedIn: true,
+    const { customerAccount } = loginResponse
+    if (loginResponse.userId) {
+      return {
+        cart: undefined,
+        signedIn: true,
+        email: customerAccount.emailAddress,
+        name: customerAccount.firstName + ' ' + customerAccount.lastName,
+      }
+    } else {
+      return {
+        cart: undefined,
+        signedIn: false,
+      }
     }
   } catch {
     return {
@@ -24,5 +33,4 @@ export default async function signIn(
       signedIn: false,
     }
   }
-
 }

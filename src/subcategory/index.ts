@@ -56,8 +56,8 @@ export default async function subcategory(params, req, res): Promise<Result<Subc
     }
 
     const productListingQuery = query({ categoryCode: categoryCode, filters, currentPage: page, sort, search: q })
-    // const rawData = await fetchWithGraphQl({ query: productListingQuery })
-    const rawData = await getClient({ query: productListingQuery })
+    const client = getClient(req)
+    const rawData = await client.query({ query: productListingQuery })
 
     const pd = await getPageData(rawData)
     

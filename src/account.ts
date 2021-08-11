@@ -3,7 +3,7 @@ import getAppData from './app/getAppData';
 
 export default async function account(req, res) {
   return await fulfillAPIRequest(req, {
-    appData: getAppData,
+    appData: () => getAppData(req),
     pageData: () =>
       Promise.resolve({
         title: 'My Account',

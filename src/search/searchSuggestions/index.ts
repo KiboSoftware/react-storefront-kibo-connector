@@ -15,8 +15,8 @@ export default async function searchSuggestions(
   req,
   res,
 ): Promise<SearchSuggestions> {
-  // const rawData = await fetchWithGraphQl({ query: query(q) })
-  const rawData = await getClient({ query: query(q) })
+  const client = getClient(req)
+  const rawData = await client.query({ query: query(q) })
 
   return {
     text: q,

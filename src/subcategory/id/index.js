@@ -4,8 +4,8 @@ import normalizeCategory from './normalizer'
 
 export default async function(categoryId) {
     
-    // const category = await fetchWithGraphQL({ query: query(categoryId) })
-    const category = await getClient({ query: query(categoryId) })
+    const client = getClient(req)
+    const category = await client.query({ query: query(categoryId) })
 
 
     return normalizeCategory(category)
