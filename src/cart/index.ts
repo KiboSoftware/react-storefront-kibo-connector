@@ -10,10 +10,10 @@ import getAuthTicketFromRequest from '../helpers/sessionTokenHelpers'
 
 export default async function cart(req, res): Promise<Result<CartResponse>> {
   const authTicket = getAuthTicketFromRequest(req)
-  const cart = await getCurrentCart(authTicket, req)
+  const cart = await getCurrentCart(authTicket, req, res)
 
   return await fulfillAPIRequest(req, {
-    appData: getAppData,
+    appData: () => getAppData(req, res),
     pageData: () =>
       Promise.resolve({
         title: 'Cart',

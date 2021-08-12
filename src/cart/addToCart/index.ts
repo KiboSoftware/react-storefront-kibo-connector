@@ -25,7 +25,7 @@ function buildAddToCartVariables({ product, quantity=1 }) {
 }
 export default async function addToCart({ product, quantity, color, size }, req, res) {
 
-    const client = getClient(req)
+    const client = getClient(req,res)
     
     const variables = buildAddToCartVariables({product, quantity })
 

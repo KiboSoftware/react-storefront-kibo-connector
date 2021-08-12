@@ -15,7 +15,7 @@ export default async function searchSuggestions(
   req,
   res,
 ): Promise<SearchSuggestions> {
-  const client = getClient(req)
+  const client = getClient(req,res)
   const rawData = await client.query({ query: query(q) })
 
   return {

@@ -19,7 +19,7 @@
     "ts:check": "tsc",
     "push-build": "npm run build && cd dist && yalc push && cd ..",
     "clean": "shx rm -rf dist && shx mkdir -p dist",
-    "build": "npm run build:prep && npm run ts:check && cross-env NODE_ENV=development npm run build:sources",
+    "build": "npm run build:prep && npm run ts:check && SET NODE_ENV=development npm run build:sources",
     "build:prep": "npm run clean && shx cp package.json dist",
     "build:sources": "babel ./src --source-maps --out-dir dist --extensions \".js\"",
     "lint": "npm run lint:check",

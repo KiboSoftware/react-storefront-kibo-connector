@@ -4,8 +4,8 @@ import getClient from '../util/client'
 import query from './query'
 import normalizer from './normalizer'
 
-export default async function (numberOfLevels, req): Promise<MenuItem[]> {
-  const client = getClient(req)
+export default async function (numberOfLevels, req, res): Promise<MenuItem[]> {
+  const client = getClient(req, res)
   const rawData = await client.query({ query: query(numberOfLevels) })
 
   const tabs = normalizer(get(rawData, 'data.categoriesTree.items', []))

@@ -10,8 +10,8 @@ function buildUpdateCartItemVariables(item, quantity){
         quantity
     }
 }
-export default async function updateCartItem(item, quantity, req, _res): Promise<CartResponse> {
-    const client = getClient(req)
+export default async function updateCartItem(item, quantity, req, res): Promise<CartResponse> {
+    const client = getClient(req,res)
     
     const variables = buildUpdateCartItemVariables(item, quantity)
 

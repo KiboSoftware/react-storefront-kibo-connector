@@ -42,7 +42,7 @@ export default async function signUp(
   req: Request,
   res: Response,
 ): Promise<Session> {
-  const client = await getClient(req)
+  const client = await getClient(req,res)
   const account = {
     emailAddress: data.email,
     firstName: data.firstName,

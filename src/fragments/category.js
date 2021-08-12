@@ -1,5 +1,7 @@
-export const categoryUrlInfo = `
-fragment categoryUrlInfo on Category {
+import gql from "graphql-tag"
+
+export const categoryUrlInfo = gql`
+fragment categoryUrlInfo on PrCategory {
   categoryId
   categoryCode
   content {
@@ -8,8 +10,8 @@ fragment categoryUrlInfo on Category {
   }
 }
 `
-export const categoryInfo = `
-fragment categoryInfo on Category {
+export const categoryInfo = gql`
+fragment categoryInfo on PrCategory {
     categoryId
     categoryCode
     content {

@@ -5,7 +5,7 @@ import { currentCartQuery } from '../query'
 
 export default async function removeCartItem(item, req, res) {
 
-    const client = getClient(req)
+    const client = getClient(req,res)
     
     await client.mutate({ mutation: deleteCurrentCartItemQuery, variables: { id: item.id } })
     

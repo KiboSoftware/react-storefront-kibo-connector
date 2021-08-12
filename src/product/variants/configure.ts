@@ -19,8 +19,8 @@ function getConfigureVariables(productCode, options={}, quantity=1) {
     }
 }
 
-async function fetchVariant(productCode, options, req) {
-    const client = getClient(req)
+async function fetchVariant(productCode, options, req, res) {
+    const client = getClient(req,res)
     const rawData = await client.mutate({
         mutation: mutation, 
         variables: getConfigureVariables(productCode, options)

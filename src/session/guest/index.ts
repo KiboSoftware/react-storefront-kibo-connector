@@ -8,9 +8,9 @@ const query = gql`
     }
   }
 `
-export async function obtainSessionData(req) {
+export async function obtainSessionData(req, res) {
   // const rawResponse = await fetchWithApollo({query})
-  const client = getClient(req)
+  const client = getClient(req, res)
   const rawResponse = (await client.query({ query })) as any
 
   return rawResponse.authorization

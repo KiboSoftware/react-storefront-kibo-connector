@@ -11,8 +11,8 @@ const mutation = gql`
   }
 `
 
-export default async function createCartForUserId(authTicket, userId, req) {
-  const client = getClient(req)
+export default async function createCartForUserId(authTicket, userId, req, res) {
+  const client = getClient(req,res)
   const cartId = await client.mutate({ mutation, variables: { id: userId } })
 
   let test = get(cartId, 'data.cart.id')

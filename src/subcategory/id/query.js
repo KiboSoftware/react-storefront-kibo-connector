@@ -1,6 +1,7 @@
+import gql from 'graphql-tag'
 import { categoryInfo } from '../../fragments/category'
 
-const query = (categoryId) => `
+const query = (categoryId) => gql`
 {
     category(categoryId: ${categoryId}) {
             ...categoryInfo

@@ -1,14 +1,13 @@
 import Result from 'react-storefront-connector/Result'
 import withAppData from '../app/withAppData'
 
-export default async function home(req, res): Promise<Result<any>> {
-  console.log('---------------inside Home-----------------------')
+export default async function (req, res): Promise<Result<any>> {
   const data = await withAppData(req, res, () =>
     Promise.resolve({
-      title: 'Home',
+      title: 'User Authentication',
       slots: {
-        heading: 'Home',
-        description: 'Welcome!',
+        heading: 'Auth',
+        description: 'Sign up and Sign In!',
       },
       breadcrumbs: [
         {
@@ -18,7 +17,6 @@ export default async function home(req, res): Promise<Result<any>> {
       ],
     }),
   )
-  console.log('---------------inside Home return-----------------------', data)
 
   return { ...data }
 }

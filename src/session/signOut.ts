@@ -5,7 +5,7 @@ export default async function (
   req: Request,
   res: Response,
 ): Promise<Session> {
-  const client = await getClient(req)
+  const client = await getClient(req,res)
   
   if (client.ticketManager) {
     await client.ticketManager.invalidateTicket()

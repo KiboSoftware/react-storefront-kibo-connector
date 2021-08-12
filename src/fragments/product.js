@@ -1,5 +1,6 @@
+import gql from "graphql-tag"
 
-export const productPrices = `
+export const productPrices = gql`
 fragment productPrices on Product {
       price {
         price
@@ -11,7 +12,7 @@ fragment productPrices on Product {
       }
     }
 `
-export const productAttributes = `
+export const productAttributes = gql`
 fragment productAttributes on Product {
   properties {
     attributeFQN
@@ -26,7 +27,7 @@ fragment productAttributes on Product {
  }
 }
 `
-export const productContent = `
+export const productContent = gql`
 fragment productContent on Product {
   content {
     productFullDescription
@@ -41,7 +42,7 @@ fragment productContent on Product {
   }
 }
 `
-export const productOptions = `
+export const productOptions = gql`
 fragment productOptions on Product{
   options {
     attributeFQN
@@ -57,7 +58,7 @@ fragment productOptions on Product{
   }
 }
 `
-export const productInfo = `
+export const productInfo = gql`
 fragment productInfo on Product {
         productCode
         productUsage

@@ -22,15 +22,16 @@ async function getPageData(rawData) {
 export default async function product(
   { id },
   req,
+  res,
 ): Promise<Result<ProductPageData>> {
   const { color, size } = req.query
 
-  const client = getClient(req)
+  const client = getClient(req, res)
   const raw = await client.query({ query: query(id) })
 
   let variantData
   if (color || size) {
-    variantData = await fetchVariant(id, { color, size }, req)
+    variantData = await fetchVariant(id, { color, size }, req, res)
   }
   if (variantData?.data && raw?.data) {
     Object.assign(raw.data, variantData.data)
