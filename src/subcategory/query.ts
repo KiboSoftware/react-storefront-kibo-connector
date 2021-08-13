@@ -1,3 +1,4 @@
+import { gql } from 'graphql-tag';
 import { categoryInfo } from '../fragments/category'
 import { searchResults } from '../fragments/product-listing'
 
@@ -42,7 +43,7 @@ const query = ({
     const facetValueFilter = getFacetValueFilter(categoryCode, filters)
     const categoryQuery = getSubcategoryQuery(categoryCode) || ''
 
-    return `
+    return gql`
     {
         ${categoryQuery}
         productSearch (

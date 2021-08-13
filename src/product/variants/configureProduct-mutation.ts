@@ -1,8 +1,18 @@
-// GQL Mutation 
+import { gql } from 'graphql-tag'
+// GQL Mutation
 // @TODO - Do something with this (apollo client library?)
-const mutation = `
-mutation CongifureProd($productCode: String!, $selectedOptions: ProductOptionSelections_Input!, $quantity:Int){
-    configureProduct(productCode:$productCode, quantity:$quantity, includeOptionDetails:true, productOptionSelections_Input: $selectedOptions){
+const mutation = gql`
+  mutation CongifureProd(
+    $productCode: String!
+    $selectedOptions: ProductOptionSelections_Input!
+    $quantity: Int
+  ) {
+    configureProduct(
+      productCode: $productCode
+      quantity: $quantity
+      includeOptionDetails: true
+      productOptionSelections_Input: $selectedOptions
+    ) {
       productCode
       variationProductCode
       price {
@@ -12,10 +22,10 @@ mutation CongifureProd($productCode: String!, $selectedOptions: ProductOptionSel
       productImages {
         imageUrl
         imageLabel
-        productImageGroupId   
+        productImageGroupId
       }
     }
-}
-`;
+  }
+`
 
 export default mutation

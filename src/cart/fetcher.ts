@@ -1,11 +1,11 @@
-import { fetchWithApollo } from '../util/fetchWithGraphQL'
+import getClient from '../util/client'
 import { currentCartQuery } from './query'
 import normalizer from './normalizer'
 
-export default async function fetchCurrentCart(authorization) {
-    
-    const rawData = await fetchWithApollo( { query: currentCartQuery }, authorization)
-    const cart = normalizer(rawData)
-    
-    return cart
+export default async function fetchCurrentCart(authorization, req, res) {
+  const client = getClient(req, res)
+  const rawData = client.query({ query: currentCartQuery })
+  const cart = normalizer(rawData)
+
+  return cart
 }

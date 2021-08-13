@@ -1,4 +1,4 @@
-import fetchWithGraphQl from '../../util/fetchWithGraphQL'
+import getClient from '../../util/client'
 import mutation from './configureProduct-mutation'
 
 function getConfigureVariables(productCode, options={}, quantity=1) {
@@ -19,9 +19,10 @@ function getConfigureVariables(productCode, options={}, quantity=1) {
     }
 }
 
-async function fetchVariant(productCode, options) {
-    const rawData = await fetchWithGraphQl({
-        query: mutation, 
+async function fetchVariant(productCode, options, req, res) {
+    const client = getClient(req,res)
+    const rawData = await client.mutate({
+        mutation: mutation, 
         variables: getConfigureVariables(productCode, options)
     })
     return rawData

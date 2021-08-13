@@ -1,3 +1,4 @@
+import { gql } from 'graphql-tag';
 import { categoryUrlInfo } from '../fragments/category'
 
 function getChildrenCategoriesSchema(numberOfLevels=1) {
@@ -11,7 +12,7 @@ function getChildrenCategoriesSchema(numberOfLevels=1) {
     return schemaStr
 } 
 
-const query = (numberOfLevels=1) => `
+const query = (numberOfLevels=1) =>  gql`
 {
   categoriesTree {
     items {

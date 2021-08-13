@@ -1,4 +1,5 @@
-const query = (query) => `
+import { gql } from 'graphql-tag';
+const query = (query) => gql`
 {
     suggestionSearch(query:"${query}", groups:"pages,categories"){
       suggestionGroups{

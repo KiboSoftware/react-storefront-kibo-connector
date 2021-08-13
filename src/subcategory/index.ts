@@ -7,11 +7,11 @@ import query from './query'
 import normalizeSubcategory from './normalizer'
 import getCategory from './id'
 
-import fetchWithGraphQl from '../util/fetchWithGraphQL'
+import getClient from '../util/client'
 import getAppData from '../app/getAppData.js';
 import { createCategoryBreadcrumbs } from '../util/createBreadcrumbs'
 
-async function getPageData(rawData) {
+async function getPageData(rawData, req, res) {
 
     const category = normalizeSubcategory(rawData)
 
@@ -19,7 +19,7 @@ async function getPageData(rawData) {
     const parentCategoryId = get(rawData, 'data.categories.items[0].parentCategory.categoryId', 0)
     console.log(parentCategoryId)
     if(parentCategoryId) {
-        const parentCategory = await getCategory(parentCategoryId)
+        const parentCategory = await getCategory(parentCategoryId, req, res)
         console.log(parentCategory)
         categoriesForCrumbs.push(parentCategory)
     }
@@ -56,8 +56,10 @@ export default async function subcategory(params, req, res): Promise<Result<Subc
     }
 
     const productListingQuery = query({ categoryCode: categoryCode, filters, currentPage: page, sort, search: q })
-    const rawData = await fetchWithGraphQl({ query: productListingQuery })
-    const pd = await getPageData(rawData)
+    const client = getClient(req,res)
+    const rawData = await client.query({ query: productListingQuery })
+
+    const pd = await getPageData(rawData, req, res)
     
 
     return await fulfillAPIRequest(req, {

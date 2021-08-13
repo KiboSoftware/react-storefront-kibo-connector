@@ -1,6 +1,7 @@
+import gql from 'graphql-tag'
 import { productInfo } from './product'
 
-export const searchFacets = `
+export const searchFacets = gql`
 fragment searchFacets on Facet {
     label
     field
@@ -14,7 +15,7 @@ fragment searchFacets on Facet {
     }
 }`
 
-export const searchResults = `
+export const searchResults = gql`
 fragment searchResults on ProductSearchResult {
     totalCount
     pageSize

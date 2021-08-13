@@ -1,20 +1,22 @@
 import gql from 'graphql-tag'
 import get from 'lodash/get'
 
-import { mutateWithApollo } from '../../util/fetchWithGraphQL'
+import getClient from '../../util/client'
 
 const mutation = gql`
-mutation createCart($id:String!) {
-    createCartForUser(userId:$id){
+  mutation createCart($id: String!) {
+    createCartForUser(userId: $id) {
       id
     }
-}`
+  }
+`
 
-export default async function createCartForUserId(authTicket, userId) {
+export default async function createCartForUserId(authTicket, userId, req, res) {
+  const client = getClient(req,res)
+  const cartId = await client.mutate({ mutation, variables: { id: userId } })
 
-    const cartId = await mutateWithApollo({mutation, variables: { id: userId }}, authTicket)
-    let test = get(cartId, 'data.cart.id')
-    console.log('test\n\n========', test)
-    console.log(JSON.stringify(cartId))
-    return test
+  let test = get(cartId, 'data.cart.id')
+  console.log('test\n\n========', test)
+  console.log(JSON.stringify(cartId))
+  return test
 }

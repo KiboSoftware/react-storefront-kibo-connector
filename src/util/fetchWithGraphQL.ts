@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import config, { GRAPHQL_HOST } from '../config.js';
+import config from '../config.js';
 import { CreateApolloClient } from '@kibocommerce/graphql-client'
 
 
@@ -35,7 +35,7 @@ async function fetchWithApollo({ query }, authorization = undefined) {
 }
 
 async function fetchWithGraphql(query) {
-    const resp = await fetch(GRAPHQL_HOST, {
+    const resp = await fetch("", {
         "headers": {
           "accept": "*/*",
           "sec-fetch-mode": "cors",
