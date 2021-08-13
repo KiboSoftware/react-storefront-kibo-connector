@@ -31,13 +31,15 @@ export default async function product(
 
   let variantData
   if (color || size) {
+    console.log('---------------------color -----------', color,'------size-------------',size,"-----raw-----", raw)
+
     variantData = await fetchVariant(id, { color, size }, req, res)
   }
   if (variantData?.data && raw?.data) {
     Object.assign(raw.data, variantData.data)
   }
   const result = await fulfillAPIRequest(req, {
-    appData: getAppData,
+    appData: () => getAppData(req, res),
     pageData: () => getPageData(raw),
   })
   return result

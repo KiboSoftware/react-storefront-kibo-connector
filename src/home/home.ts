@@ -2,7 +2,6 @@ import Result from 'react-storefront-connector/Result'
 import withAppData from '../app/withAppData'
 
 export default async function home(req, res): Promise<Result<any>> {
-  console.log('---------------inside Home-----------------------')
   const data = await withAppData(req, res, () =>
     Promise.resolve({
       title: 'Home',
@@ -18,7 +17,6 @@ export default async function home(req, res): Promise<Result<any>> {
       ],
     }),
   )
-  console.log('---------------inside Home return-----------------------', data)
 
   return { ...data }
 }

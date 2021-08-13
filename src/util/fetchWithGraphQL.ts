@@ -9,7 +9,6 @@ async function fetchWithApollo({ query }, authorization = undefined) {
     onTicketChange: (authTicket: any) => {
       if (!authorization || authorization.accessToken !== authTicket.accessToken) {
         authorization = authTicket;
-        // console.log(authorization)
       }
     },
     onTicketRead: () => {
@@ -19,7 +18,6 @@ async function fetchWithApollo({ query }, authorization = undefined) {
       authorization = undefined;
     }
   }
-  console.log('create app client')
   const apolloClient = CreateApolloClient({
       api: config,
       clientAuthHooks
@@ -56,7 +54,6 @@ async function mutateWithApollo(operation, authorization = undefined) {
     onTicketChange: (authTicket: any) => {
       if (!authorization || authorization.accessToken !== authTicket.accessToken) {
         authorization = authTicket;
-        // console.log(authorization)
       }
     },
     onTicketRead: () => {
@@ -66,7 +63,6 @@ async function mutateWithApollo(operation, authorization = undefined) {
       authorization = undefined;
     }
   }
-  console.log('create app client')
   const apolloClient = CreateApolloClient({
       api: config,
       clientAuthHooks

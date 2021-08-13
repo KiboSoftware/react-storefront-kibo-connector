@@ -12,7 +12,7 @@ function getConfigureVariables(productCode, options={}, quantity=1) {
     })
     return {
         productCode,
-        quantity,
+        includeOptionDetails: true,
         selectedOptions: {
             options: variantOptions
         }
@@ -25,6 +25,7 @@ async function fetchVariant(productCode, options, req, res) {
         mutation: mutation, 
         variables: getConfigureVariables(productCode, options)
     })
+    console.log("------------rawdata variant-------------", rawData)
     return rawData
 }
 

@@ -27,7 +27,6 @@ function normalizeCartItems(cartItems=[]):CartItem[] {
 
 function normalize(rawData):Cart {
     const total = get(rawData, 'data.cart.total', 0)
-    console.log(`cart for user`, get(rawData, 'data.cart.userId'))
     const cartItemsData = get(rawData, 'data.cart.items', [])
     return {
         items: normalizeCartItems(cartItemsData)

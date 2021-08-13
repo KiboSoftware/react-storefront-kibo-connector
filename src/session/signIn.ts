@@ -11,23 +11,21 @@ export default async function (
   try {
     const x = req.body as any
     const val = await JSON.parse(x)
-    console.log('---cred-------', val)
     const loginResponse: any = await client.loginCustomerAndSetAuthTicket({
       username: val.email,
       password: val.password,
     })
-    const { customerAccount } = loginResponse
-    if (loginResponse.userId) {
+    const { customerAccount, userId } = loginResponse
+    if (userId) {
       return {
         cart: {
           items: [],
         },
         signedIn: true,
         email: customerAccount.emailAddress,
-        name: customerAccount.firstName + ' ' + customerAccount.lastName,
+        name: `${customerAccount.firstName} ${customerAccount.lastName}`,
       }
     } else {
-      console.log('loginResponse', loginResponse)
       return {
         cart: {
           items: [],

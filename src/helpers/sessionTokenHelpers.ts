@@ -47,9 +47,7 @@ function getAuthTicketFromRequest(req) {
     return
   }
   const authTicket = decodeAuthString(authCookieValue)
-  console.log(`Auth userid`, getUserIdFromTicket(authTicket))
   return authTicket
-  //    return decodeAuthString(authCookieValue)
 }
 export default getAuthTicketFromRequest
 

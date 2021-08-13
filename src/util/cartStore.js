@@ -15,7 +15,6 @@ function getStore(req, res) {
   try {
     return JSON.parse(store)
   } catch (err) {
-    console.log('Failed parsing store from cookie', req.cookies[CART_COOKIE])
     return []
   }
 }

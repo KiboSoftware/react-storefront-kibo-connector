@@ -33,6 +33,5 @@ export default async function addToCart({ product, quantity, color, size }, req,
     
     const rawCart = await client.query({query: currentCartQuery})
 
-    console.log(`after add`, rawCart)
     return { cart: normalizeCart(rawCart) }
 }
