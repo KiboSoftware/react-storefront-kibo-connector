@@ -8,9 +8,12 @@ import {
   prepareKillCookie,
 } from '../helpers/nodeCookieHelpers'
 
-function getClient(req, res) {
-  let authorization = getAuthTicketFromRequest(req)
+let authorization;
 
+function getClient(req, res) {
+  if (!authorization) {
+    authorization = getAuthTicketFromRequest(req)
+  }
   const clientAuthHooks = {
     onTicketChange: (authTicket: any) => {
       if (

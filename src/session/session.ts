@@ -1,12 +1,12 @@
 import Session from 'react-storefront-connector/Session'
+import { getCurrentCart } from '../cart'
 // /* eslint-disable max-len */
 
 import getCurrentUser from './getCurrentUser'
 
 export default async function session(req, res): Promise<Session> {
-  const cookiesToSet = []
-
   const currentUserResponse = await getCurrentUser(req, res)
+  const cart = await getCurrentCart(req, res)
   const {
     emailAddress,
     firstName,
@@ -18,16 +18,12 @@ export default async function session(req, res): Promise<Session> {
       signedIn: true,
       email: emailAddress,
       name: `${firstName} ${lastName}`,
-      cart: {
-        items: [],
-      },
+      cart: cart
     }
   }
 
   return {
     signedIn: false,
-    cart: {
-      items: [],
-    },
+    cart: cart
   }
 }

@@ -1,19 +1,19 @@
 import Session from 'react-storefront-connector/Session'
 import getClient from '../util/client'
 import session from './session'
+import withAmpFormParser from 'react-storefront/middlewares/withAmpFormParser'
 
 export default async function (
-  { email, password },
   req: Request,
   res: Response,
 ): Promise<Session> {
   const client = await getClient(req, res)
   try {
-    const x = req.body as any
-    const val = await JSON.parse(x)
+    const requestBody = req.body as any
+    const parsedRequestBody = await JSON.parse(requestBody)
     const loginResponse: any = await client.loginCustomerAndSetAuthTicket({
-      username: val.email,
-      password: val.password,
+      username: parsedRequestBody.email,
+      password: parsedRequestBody.password,
     })
     const { customerAccount, userId } = loginResponse
     if (userId) {

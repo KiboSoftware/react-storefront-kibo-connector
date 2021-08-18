@@ -19,7 +19,6 @@ function getCreateAccountVars(signUpData) {
       isActive: true,
       id: 0,
       hasExternalPassword: false,
-      taxExempt: false,
     },
   }
 }
@@ -42,11 +41,14 @@ export default async function signUp(
   req: Request,
   res: Response,
 ): Promise<Session> {
-  const client = await getClient(req,res)
+  const client = await getClient(req, res)
+  const requestBody = req.body as any
+  const parsedRequestBody = await JSON.parse(requestBody)
+
   const account = {
-    emailAddress: data.email,
-    firstName: data.firstName,
-    lastName: data.lastName,
+    emailAddress: parsedRequestBody.email,
+    firstName: parsedRequestBody.firstName,
+    lastName: parsedRequestBody.lastName,
   }
 
   const customerAccountResponse = (await client.mutate({
@@ -59,7 +61,7 @@ export default async function signUp(
 
   const customerAccountLoginResponse = (await client.mutate({
     mutation: createAccountLoginMutation,
-    variables: getCreateAccountLoginVars(id, data.password, account),
+    variables: getCreateAccountLoginVars(id, parsedRequestBody.password, account),
     fetchPolicy: 'no-cache',
     context: {
       headers: {

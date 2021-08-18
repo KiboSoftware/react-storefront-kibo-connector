@@ -25,7 +25,6 @@ async function fetchVariant(productCode, options, req, res) {
         mutation: mutation, 
         variables: getConfigureVariables(productCode, options)
     })
-    console.log("------------rawdata variant-------------", rawData)
     return rawData
 }
 
