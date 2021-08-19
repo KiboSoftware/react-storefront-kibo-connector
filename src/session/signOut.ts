@@ -12,7 +12,9 @@ export default async function (
   }
 
   return {
-    cart: undefined,
+    cart: {
+      items: []
+    },
     signedIn: false,
   }
 }

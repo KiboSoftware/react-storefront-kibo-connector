@@ -12,9 +12,7 @@ function buildUpdateCartItemVariables(item, quantity){
 }
 export default async function updateCartItem(item, quantity, req, res): Promise<CartResponse> {
     const client = getClient(req,res)
-    
     const variables = buildUpdateCartItemVariables(item, quantity)
-
     await client.mutate({ mutation: updateCurrentCartQuantityQuery, variables })
 
     const rawCart = await client.query({ query: currentCartQuery })

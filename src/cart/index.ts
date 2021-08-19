@@ -8,8 +8,6 @@ import getAppData from '../app/getAppData'
 import getCurrentCart from './fetcher'
 
 export default async function cart(req, res): Promise<Result<CartResponse>> {
-  const cartDetails = await getCurrentCart(req, res)
-
   return await fulfillAPIRequest(req, {
     appData: () => getAppData(req, res),
     pageData: () =>
@@ -21,7 +19,6 @@ export default async function cart(req, res): Promise<Result<CartResponse>> {
             href: '/',
           },
         ],
-        cartDetails,
       }),
   })
 }

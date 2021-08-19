@@ -17,6 +17,7 @@ query GetCurrentCart {
       items {
         id
         total
+        quantity
         product {
           productCode
           name
