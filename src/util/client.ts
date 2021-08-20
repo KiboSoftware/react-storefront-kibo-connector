@@ -32,11 +32,9 @@ function getClient(req, res) {
       }
     },
     onTicketRead: () => {
-      console.log(`read ticket`)
       return authorization as any
     },
     onTicketRemove: () => {
-      console.log(`on ticket remove`)
       prepareKillCookie(COOKIES.KIBO_CUSTOMER_TOKEN)
       authorization = undefined
     },

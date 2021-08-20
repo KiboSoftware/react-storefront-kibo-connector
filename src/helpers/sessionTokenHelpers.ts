@@ -6,7 +6,6 @@ function decodeAuthString(base64String) {
     const text = Buffer.from(base64String, 'base64').toString('ascii')
     return JSON.parse(text)
   } catch (e) {
-    console.log(e)
     return {}
   }
 }
