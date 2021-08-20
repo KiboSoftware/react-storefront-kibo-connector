@@ -1,33 +1,28 @@
 import Session from 'react-storefront-connector/Session'
 import getClient from '../util/client'
 import session from './session'
+import withAmpFormParser from 'react-storefront/middlewares/withAmpFormParser'
+import { getCurrentCart } from '../cart'
 
-export default async function (
-  { email, password },
-  req: Request,
-  res: Response,
-): Promise<Session> {
+export default async function (req: Request, res: Response): Promise<Session> {
   const client = await getClient(req, res)
   try {
-    const x = req.body as any
-    const val = await JSON.parse(x)
-    console.log('---cred-------', val)
+    const requestBody = req.body as any
+    const parsedRequestBody = await JSON.parse(requestBody)
     const loginResponse: any = await client.loginCustomerAndSetAuthTicket({
-      username: val.email,
-      password: val.password,
+      username: parsedRequestBody.email,
+      password: parsedRequestBody.password,
     })
-    const { customerAccount } = loginResponse
-    if (loginResponse.userId) {
+    const { customerAccount, userId } = loginResponse
+    if (userId) {
+      const cart = await getCurrentCart(req, res)
       return {
-        cart: {
-          items: [],
-        },
+        cart,
         signedIn: true,
         email: customerAccount.emailAddress,
-        name: customerAccount.firstName + ' ' + customerAccount.lastName,
+        name: `${customerAccount.firstName} ${customerAccount.lastName}`,
       }
     } else {
-      console.log('loginResponse', loginResponse)
       return {
         cart: {
           items: [],

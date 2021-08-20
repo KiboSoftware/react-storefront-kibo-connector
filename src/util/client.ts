@@ -1,4 +1,4 @@
-import { COOKIES } from './../constants';
+import { COOKIES } from './../constants'
 import config from '../config.js'
 import { CreateApolloClient } from '@kibocommerce/graphql-client'
 import getAuthTicketFromRequest from '../helpers/sessionTokenHelpers'
@@ -8,17 +8,18 @@ import {
   prepareKillCookie,
 } from '../helpers/nodeCookieHelpers'
 
+let authorization;
 
 function getClient(req, res) {
-  let authorization = getAuthTicketFromRequest(req)
-
+  if (!authorization) {
+    authorization = getAuthTicketFromRequest(req)
+  }
   const clientAuthHooks = {
     onTicketChange: (authTicket: any) => {
       if (
         !authorization ||
         authorization.accessToken !== authTicket.accessToken
       ) {
-        console.log(`on ticket change`)
         authorization = authTicket
         const authCookie = prepareSetCookie(
           COOKIES.KIBO_CUSTOMER_TOKEN,
@@ -31,11 +32,9 @@ function getClient(req, res) {
       }
     },
     onTicketRead: () => {
-      console.log(`read ticket`)
       return authorization as any
     },
     onTicketRemove: () => {
-      console.log(`on ticket remove`)
       prepareKillCookie(COOKIES.KIBO_CUSTOMER_TOKEN)
       authorization = undefined
     },

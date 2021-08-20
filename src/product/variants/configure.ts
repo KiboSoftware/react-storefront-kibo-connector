@@ -12,7 +12,7 @@ function getConfigureVariables(productCode, options={}, quantity=1) {
     })
     return {
         productCode,
-        quantity,
+        includeOptionDetails: true,
         selectedOptions: {
             options: variantOptions
         }

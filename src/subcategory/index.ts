@@ -8,62 +8,71 @@ import normalizeSubcategory from './normalizer'
 import getCategory from './id'
 
 import getClient from '../util/client'
-import getAppData from '../app/getAppData.js';
+import getAppData from '../app/getAppData.js'
 import { createCategoryBreadcrumbs } from '../util/createBreadcrumbs'
 
 async function getPageData(rawData, req, res) {
+  const category = normalizeSubcategory(rawData)
 
-    const category = normalizeSubcategory(rawData)
+  let categoriesForCrumbs = []
+  const parentCategoryId = get(
+    rawData,
+    'data.categories.items[0].parentCategory.categoryId',
+    0,
+  )
+  if (parentCategoryId) {
+    const parentCategory = await getCategory(parentCategoryId, req, res)
+    categoriesForCrumbs.push(parentCategory)
+  }
 
-    let categoriesForCrumbs = []
-    const parentCategoryId = get(rawData, 'data.categories.items[0].parentCategory.categoryId', 0)
-    console.log(parentCategoryId)
-    if(parentCategoryId) {
-        const parentCategory = await getCategory(parentCategoryId, req, res)
-        console.log(parentCategory)
-        categoriesForCrumbs.push(parentCategory)
-    }
-
-    return {
-        ...category,
-        title: category.name,
-        breadcrumbs: createCategoryBreadcrumbs(categoriesForCrumbs),
-    }
+  return {
+    ...category,
+    title: category.name,
+    breadcrumbs: createCategoryBreadcrumbs(categoriesForCrumbs),
+  }
 }
 /**
  * An implementation of the API for the Subcategory Page using Kibo Product Listing data.
  * @param {Object} params
  * @param {String} params.q The search text
- * @param {Array} params.slug List of url slugs 
+ * @param {Array} params.slug List of url slugs
  * @param {String} params.filters JSON Stringified list of search facets
  * @param {Number} params.page The current page number
- * @return {Promise<Object>} An object whose shape matches 
+ * @return {Promise<Object>} An object whose shape matches
  */
-export default async function subcategory(params, req, res): Promise<Result<SubcategoryPageData>>  {
-    console.log(`Sub cat connector`)
-    let { q, slug, page = 0, filters, sort, more = false } = params
-    
-    // parse facet filter values
-    if(filters) {
-        filters = JSON.parse(filters)
-    } else {
-        filters = []
-    }
+export default async function subcategory(
+  params,
+  req,
+  res,
+): Promise<Result<SubcategoryPageData>> {
+  let { q, slug, page = 0, filters, sort, more = false } = params
 
-    let categoryCode
-    if(slug) {
-        categoryCode = slug.pop()
-    }
+  // parse facet filter values
+  if (filters) {
+    filters = JSON.parse(filters)
+  } else {
+    filters = []
+  }
 
-    const productListingQuery = query({ categoryCode: categoryCode, filters, currentPage: page, sort, search: q })
-    const client = getClient(req,res)
-    const rawData = await client.query({ query: productListingQuery })
+  let categoryCode
+  if (slug) {
+    categoryCode = slug.pop()
+  }
 
-    const pd = await getPageData(rawData, req, res)
-    
+  const productListingQuery = query({
+    categoryCode: categoryCode,
+    filters,
+    currentPage: page,
+    sort,
+    search: q,
+  })
+  const client = getClient(req, res)
+  const rawData = await client.query({ query: productListingQuery })
 
-    return await fulfillAPIRequest(req, {
-        appData: getAppData,
-        pageData: () => Promise.resolve(pd),
-      })
+  const pd = await getPageData(rawData, req, res)
+
+  return await fulfillAPIRequest(req, {
+    appData: () => getAppData(req, res),
+    pageData: () => Promise.resolve(pd),
+  })
 }

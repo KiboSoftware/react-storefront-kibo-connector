@@ -6,7 +6,6 @@ function decodeAuthString(base64String) {
     const text = Buffer.from(base64String, 'base64').toString('ascii')
     return JSON.parse(text)
   } catch (e) {
-    console.log(e)
     return {}
   }
 }
@@ -47,9 +46,7 @@ function getAuthTicketFromRequest(req) {
     return
   }
   const authTicket = decodeAuthString(authCookieValue)
-  console.log(`Auth userid`, getUserIdFromTicket(authTicket))
   return authTicket
-  //    return decodeAuthString(authCookieValue)
 }
 export default getAuthTicketFromRequest
 

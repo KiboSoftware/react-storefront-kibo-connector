@@ -96,7 +96,6 @@ function getPriceFromRange({upper, lower}) {
 function getPrice(product, variantProduct) {
 
     if(!variantProduct && product.priceRange) {
-        console.log(product.priceRange)
         return getPriceFromRange(product.priceRange)
     }
     // use variant price first, if exists
