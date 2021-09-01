@@ -16,6 +16,5 @@ export default async function getContent(params, req, res) {
         }
     })
 
-    console.log(`get Content: `, response)
     return response;
 }

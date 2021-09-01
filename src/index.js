@@ -1,8 +1,3 @@
-// export { default as account } from './account.js'
-// export { default as home } from './home.js'
-// export { default as productMedia } from './productMedia.js'
-// export { default as productSuggestions } from './productSuggestions.js'
-
 export { default as cart } from './cart'
 export { default as addToCart } from './cart/addToCart'
 export { default as updateCartItem } from './cart/updateCartItem'
@@ -18,7 +13,3 @@ export { default as signUp } from './session/signUp';
 export { default as signOut } from './session/signOut';
 export { default as userSignIn } from './userSignIn';
 export { default as getContent } from './getContent';
-
-
-
-

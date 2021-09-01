@@ -30,6 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "@kibocommerce/graphql-client": "^1.0.1-beta1.5",
+    "dotenv": "^10.0.0",
     "graphql-tag": "^2.12.4",
     "isomorphic-unfetch": "^3.1.0",
     "lodash.get": "^4.4.2",
