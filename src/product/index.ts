@@ -9,13 +9,17 @@ import fetchVariant from './variants/configure'
 import getAppData from '../app/getAppData'
 
 import { createPDPBreadcrumbs } from '../util/createBreadcrumbs'
+import getContent from '../getContent'
 
-async function getPageData(rawData) {
+async function getPageData(rawData, banner) {
   const product = normalizeProduct(rawData)
   return {
     title: product.name,
     product: product,
     breadcrumbs: createPDPBreadcrumbs(rawData),
+    slots: {
+      banner: banner,
+    },
   }
 }
 
@@ -25,7 +29,7 @@ export default async function product(
   res,
 ): Promise<Result<ProductPageData>> {
   const { color, size } = req.query
-
+  const documentType = process.env?.PRODUCT_DOCUMENT_TYPE
   const client = getClient(req, res)
   const raw = await client.query({ query: query(id) })
   let variantData
@@ -35,10 +39,27 @@ export default async function product(
   if (variantData?.data && raw?.data) {
     Object.assign(raw.data, variantData.data)
   }
+  let banner = null
+  try {
+    const documentResponse = await getContent(
+      {
+        documentType,
+        slug: raw?.data?.product?.content?.seoFriendlyUrl,
+      },
+      req,
+      res,
+    )
+
+    banner = documentResponse?.data?.documentListDocuments?.items?.map(
+      (item) => item?.properties?.content,
+    )
+  } catch {
+    banner = []
+  }
 
   const result = await fulfillAPIRequest(req, {
     appData: () => getAppData(req, res),
-    pageData: () => getPageData(raw),
+    pageData: () => getPageData(raw, banner),
   })
   return result
 }
