@@ -1,6 +1,6 @@
 {
-  "name": "react-storefront-kibo-connector",
-  "version": "1.0.0",
+  "name": "@kibocommerce/react-storefront-kibo-connector",
+  "version": "1.0.0-beta2",
   "description": "React Storefront Kibo connector",
   "module": "./index.js",
   "watch": {
@@ -19,7 +19,7 @@
     "ts:check": "tsc",
     "push-build": "npm run build && cd dist && yalc push && cd ..",
     "clean": "shx rm -rf dist && shx mkdir -p dist",
-    "build": "npm run build:prep && npm run ts:check && SET NODE_ENV=development npm run build:sources",
+    "build": "npm run build:prep && npm run ts:check && cross-env NODE_ENV=development npm run build:sources",
     "build:prep": "npm run clean && shx cp package.json dist",
     "build:sources": "babel ./src --source-maps --out-dir dist --extensions \".js\"",
     "lint": "npm run lint:check",
@@ -30,6 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "@kibocommerce/graphql-client": "^1.0.1-beta1.5",
+    "@material-ui/core": "4.11.2",
     "dotenv": "^10.0.0",
     "graphql-tag": "^2.12.4",
     "isomorphic-unfetch": "^3.1.0",
@@ -60,5 +61,8 @@
     "shx": "^0.3.3",
     "typescript": "^3.9.9",
     "yalc": "*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
