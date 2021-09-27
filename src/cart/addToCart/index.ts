@@ -1,4 +1,4 @@
-import get from 'lodash/get'
+import { colorAttrFQN, sizeAttrFQN } from './../../util/constants';
 import getClient from '../../util/client'
 import normalizeCart from '../normalizer'
 import { currentCartQuery } from '../query'
@@ -7,10 +7,32 @@ import addToCurrentCartMutation from './defaultMutation'
 function buildAddToCartVariables({
   product,
   quantity,
+  color,
+  size,
 }: {
   product: any
   quantity: number
+  color: string
+  size: string
 }) {
+  let selected = []
+  if (color) {
+    selected.push({
+      attributeFQN: colorAttrFQN,
+      value: color,
+    })
+  }
+  if (size) {
+    selected.push({
+      attributeFQN: sizeAttrFQN,
+      value: size,
+    })
+  }
+
+  let variationProductCode = product?.variations?.filter((each) => {
+    return JSON.stringify(each.options) === JSON.stringify(selected)
+  })[0]?.productCode
+
   return {
     productToAdd: {
       product: {
@@ -18,12 +40,8 @@ function buildAddToCartVariables({
         isRecurring: false,
         productCode: product.id,
         isPackagedStandAlone: product.isPackagedStandAlone || true,
-        variationProductCode: product.variationProductCode || null,
-        options: product.options?.map((po) => ({
-          attributeFQN: po.attributeFQN,
-          name: po.attributeDetail.name,
-          value: po.values.find((v) => v.isSelected).value,
-        })) || [],
+        variationProductCode: variationProductCode || null,
+        options: selected,
       },
       quantity,
       fulfillmentMethod: 'Ship',
@@ -37,11 +55,14 @@ export default async function addToCart(
   req,
   res,
 ) {
-
   const client = getClient(req, res)
 
-  const variables = buildAddToCartVariables({ product, quantity })
-
+  const variables = await buildAddToCartVariables({
+    product,
+    quantity,
+    color,
+    size,
+  })
   await client.mutate({ mutation: addToCurrentCartMutation, variables })
 
   const rawCart = await client.query({ query: currentCartQuery })

@@ -23,6 +23,9 @@ query GetCurrentCart {
           name
           imageUrl
         }
+        unitPrice{
+          listAmount
+        }
       }
     }
   }

@@ -2,22 +2,17 @@ import get from 'lodash/get'
 import colors from '../util/colors'
 import { Product } from '../types/ProductPageData'
 import Media from 'react-storefront-connector/Media';
-
-
-const ratingAttrFQN = `tenant~rating`
-const colorAttrFQN = `tenant~color`
-const sizeAttrFQN = `tenant~size`
+import { colorAttrFQN, ratingAttrFQN, sizeAttrFQN } from '../util/constants';
 
 const mapImage = (image): Media => ({
-        src: image.imageUrl,
-        alt: image.imageLabel,
+        src: image?.imageUrl,
+        alt: image?.imageLabel,
         type: "image"
 });
 
 const mapMedia = (images = []) => images.map(i => mapImage(i))
 
 function mapColorOptions (product, variantProduct){
-
     const options = get(product, 'options', [])
     const colorOptions = options.find(opt => opt.attributeFQN === colorAttrFQN)
     if(!colorOptions) {
@@ -106,7 +101,6 @@ function getPrice(product, variantProduct) {
     return { priceText, price: producePrice }
 }
 function normalizeProduct(rawData): Product {
-    
     const product = get(rawData, 'data.product', {})
 
     // check for configured variant product
@@ -123,6 +117,8 @@ function normalizeProduct(rawData): Product {
         colors = mapColorOptions(product, variantProduct)
         sizes = mapSizeOptions(product)
     }
+    
+
     return {
         isConfigurableProduct,
         colors,
@@ -142,6 +138,8 @@ function normalizeProduct(rawData): Product {
             thumbnails: mapMedia(productImages)
         },
         specs: getSpecsHtml(product),
+        variations: rawData?.data?.product?.variations,
+        options: rawData?.data?.product?.options
       }
 }
 
