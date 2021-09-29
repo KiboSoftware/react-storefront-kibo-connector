@@ -1,14 +1,16 @@
 import { COOKIES } from './../constants'
 import config from '../config.js'
 import { CreateApolloClient } from '@kibocommerce/graphql-client'
-import getAuthTicketFromRequest from '../helpers/sessionTokenHelpers'
+import getAuthTicketFromRequest, {
+  encodeAuthTicket,
+} from '../helpers/sessionTokenHelpers'
 import {
   setCookies,
   prepareSetCookie,
   prepareKillCookie,
 } from '../helpers/nodeCookieHelpers'
 
-let authorization;
+let authorization
 
 function getClient(req, res) {
   if (!authorization) {
@@ -23,7 +25,7 @@ function getClient(req, res) {
         authorization = authTicket
         const authCookie = prepareSetCookie(
           COOKIES.KIBO_CUSTOMER_TOKEN,
-          JSON.stringify(authorization),
+          encodeAuthTicket(JSON.stringify(authorization)),
           authorization?.accessTokenExpiration
             ? { expires: new Date(authorization.accessTokenExpiration) }
             : {},
