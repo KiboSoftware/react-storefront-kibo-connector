@@ -1,6 +1,6 @@
 {
   "name": "@kibocommerce/react-storefront-kibo-connector",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta5",
   "description": "React Storefront Kibo connector",
   "module": "./index.js",
   "watch": {
