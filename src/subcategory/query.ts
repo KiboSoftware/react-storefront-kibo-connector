@@ -19,7 +19,11 @@ function getFacetValueFilter(categoryCode, filters=[]) {
         facetValueFilter = `categoryCode:${categoryCode},`
     }
     // @TODO: Is the __v__ flag supposed to be in this list?
-    facetValueFilter = facetValueFilter + filters.filter(facet => !facet.includes('__v__:')).join(',')
+    facetValueFilter = facetValueFilter + filters.filter(facet => {
+        //check for / filter incoming array serialized to string values ( categorySlug[0]:slug )
+        let key = facet.split(':')[0];
+        return !key.includes('[') && !facet.includes('__v__:')
+    }).join(',');
 
     return facetValueFilter
 }
