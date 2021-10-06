@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const config = {
     "accessTokenUrl": process.env.KIBO_ACCESS_TOKEN_URL,
     "clientId": process.env.KIBO_CLIENT_ID,

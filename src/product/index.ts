@@ -32,6 +32,7 @@ export default async function product(
   const documentType = process.env?.PRODUCT_DOCUMENT_TYPE
   const client = getClient(req, res)
   const raw = await client.query({ query: query(id) })
+
   let variantData
   if (color || size) {
     variantData = await fetchVariant(id, { color, size }, req, res)
@@ -41,18 +42,21 @@ export default async function product(
   }
   let banner = null
   try {
-    const documentResponse = await getContent(
-      {
-        documentType,
-        slug: raw?.data?.product?.content?.seoFriendlyUrl,
-      },
-      req,
-      res,
-    )
+    const documentResponse =
+      documentType &&
+      (await getContent(
+        {
+          documentType,
+          slug: raw?.data?.product?.content?.seoFriendlyUrl,
+        },
+        req,
+        res,
+      ))
 
-    banner = documentResponse?.data?.documentListDocuments?.items?.map(
-      (item) => item?.properties?.content,
-    )
+    banner =
+      documentResponse?.data?.documentListDocuments?.items?.map(
+        (item) => item?.properties?.content,
+      ) || []
   } catch {
     banner = []
   }
