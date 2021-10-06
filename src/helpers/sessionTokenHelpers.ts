@@ -1,4 +1,4 @@
-import { getCookieValue } from './nodeCookieHelpers'
+import { getCookieValue, prepareSetCookie, setCookies } from './nodeCookieHelpers'
 import { COOKIES } from '../constants'
 
 function decodeAuthString(base64String) {
@@ -6,6 +6,7 @@ function decodeAuthString(base64String) {
     const text = Buffer.from(base64String, 'base64').toString('ascii')
     return JSON.parse(text)
   } catch (e) {
+    console.warn(`Caught exception decoding / parsing auth string cookie`, e);
     return {}
   }
 }
@@ -36,11 +37,29 @@ function getUserIdFromRequest(req) {
   return getUserIdFromRequest(authTicket)
 }
 
+function setAuthTicketOnResponse(req, res, authorization) {
+  
+  req.KIBO_USER_AUTH_TICKET = authorization;
+
+  const authCookie = prepareSetCookie(
+    COOKIES.KIBO_CUSTOMER_TOKEN,
+    encodeAuthTicket(authorization),
+    authorization?.accessTokenExpiration
+      ? { expires: new Date(authorization.accessTokenExpiration) }
+      : {},
+  )
+  setCookies(res, [authCookie]);
+}
+
+
 /**
  * @param Object http request
  * @return Kibo Authentication Object from client request cookie
  */
 function getAuthTicketFromRequest(req) {
+  if(req.KIBO_USER_AUTH_TICKET) {
+    return req.KIBO_USER_AUTH_TICKET;
+  }
   const authCookieValue = getCookieValue(req, COOKIES.KIBO_CUSTOMER_TOKEN)
   if (!authCookieValue) {
     return
@@ -55,4 +74,5 @@ export {
   getCartIdFromRequest,
   getUserIdFromRequest,
   encodeAuthTicket,
+  setAuthTicketOnResponse
 }

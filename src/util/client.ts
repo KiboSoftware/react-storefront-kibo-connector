@@ -1,53 +1,35 @@
-import { COOKIES } from './../constants'
-import config from '../config.js'
-import { CreateApolloClient } from '@kibocommerce/graphql-client'
+import { COOKIES } from "./../constants";
+import config from "../config.js";
+import { CreateApolloClient } from "@kibocommerce/graphql-client";
 import getAuthTicketFromRequest, {
-  encodeAuthTicket,
-} from '../helpers/sessionTokenHelpers'
-import {
-  setCookies,
-  prepareSetCookie,
-  prepareKillCookie,
-} from '../helpers/nodeCookieHelpers'
-
-let authorization
+  setAuthTicketOnResponse,
+} from "../helpers/sessionTokenHelpers";
+import { prepareKillCookie } from "../helpers/nodeCookieHelpers";
 
 function getClient(req, res) {
-  if (!authorization) {
-    authorization = getAuthTicketFromRequest(req)
-  }
+  let authorization = getAuthTicketFromRequest(req);
   const clientAuthHooks = {
     onTicketChange: (authTicket: any) => {
-      if (
-        !authorization ||
-        authorization.accessToken !== authTicket.accessToken
-      ) {
-        authorization = authTicket
-        const authCookie = prepareSetCookie(
-          COOKIES.KIBO_CUSTOMER_TOKEN,
-          encodeAuthTicket(JSON.stringify(authorization)),
-          authorization?.accessTokenExpiration
-            ? { expires: new Date(authorization.accessTokenExpiration) }
-            : {},
-        )
-        setCookies(res, [authCookie])
+      if (authorization?.accessToken !== authTicket.accessToken) {
+        authorization = authTicket;
+        setAuthTicketOnResponse(req, res, authorization);
       }
     },
     onTicketRead: () => {
-      return authorization as any
+      return authorization as any;
     },
     onTicketRemove: () => {
-      prepareKillCookie(COOKIES.KIBO_CUSTOMER_TOKEN)
-      authorization = undefined
+      prepareKillCookie(COOKIES.KIBO_CUSTOMER_TOKEN);
+      authorization = undefined;
     },
-  }
+  };
 
   const apolloClient = CreateApolloClient({
     api: config,
     clientAuthHooks,
-  })
+  });
 
-  return apolloClient
+  return apolloClient;
 }
 
-export default getClient
+export default getClient;

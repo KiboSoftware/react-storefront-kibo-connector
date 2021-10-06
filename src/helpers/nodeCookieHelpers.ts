@@ -57,6 +57,8 @@ export function prepareSetCookie(name: string, value: string, options: SetCookie
     cookieValue.push(`Expires=${options.expires.toUTCString()}`);
   }
 
+  cookieValue.push(`Path=/`);
+  
   return cookieValue.join('; ');
 }
 
